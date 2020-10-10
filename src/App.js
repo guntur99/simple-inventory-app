@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import fire from './config/firebase';
-import SignInUp from './Components/SignInUp'
-import Dashboard from './Components/Dashboard'
+import SignInUp from './Components/SignInUp';
+import Dashboard from './Components/Dashboard';
+import 'fontsource-roboto';
 class App extends Component{
   constructor(props)
   {
