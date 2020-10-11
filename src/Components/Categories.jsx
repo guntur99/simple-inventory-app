@@ -14,14 +14,14 @@ import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
-import { Link, Redirect } from "react-router-dom";
+import Menu from "./Menu";
+
+import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import image from "../images/image.jpg";
-import './Dashboard.css';
-import Menu from "./Menu";
+import "./Dashboard.css";
 // import { mainListItems, secondaryListItems } from "../Components/Menu";
-
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -132,8 +132,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Dashboard() {
-  
+export default function Products() {
   const [products, setProducts] = useState([]);
   const [uid, setUid] = useState([]);
 
@@ -149,7 +148,7 @@ export default function Dashboard() {
 
   const logout = () => {
     fire.auth().signOut();
-  }
+  };
 
   const classesCard = makeStyles({
     root: {
@@ -179,20 +178,18 @@ export default function Dashboard() {
       .catch((error) => {
         console.error("Error: ", error);
       });
-
   };
 
   const deleteProduct = (id) => {
-
     db.collection("products")
-        .doc(id)
-        .delete()
-        .then(() => {
-            console.log("Product deleted!");
-        })
-        .catch((error) => {
-            console.error("Error: ", error);
-        });
+      .doc(id)
+      .delete()
+      .then(() => {
+        console.log("Product deleted!");
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
   };
 
   useEffect(() => {
