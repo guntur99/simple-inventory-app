@@ -124,6 +124,8 @@ export default function Products() {
   const [stock, setStock] = useState(0);
   const [desc, setDesc] = useState('');
   const [fresh, setFresh] = useState({});
+  const [catProd, setCatProd] = useState([]);
+  const [catProdUid, setCatProdUid] = useState([]);
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -182,11 +184,6 @@ export default function Products() {
   };
 
   const createProduct = () => {
-    // console.log(productName);
-    // console.log(imgLink);
-    // console.log(category);
-    // console.log(stock);
-    // console.log(desc);
     db.collection("products")
       .get()
       .then((querySnapshot) => {
@@ -210,8 +207,6 @@ export default function Products() {
             console.error("Error: ", error);
           });
       });
-
-            // setFresh({});
   };
 
   const db = fire.firestore();
@@ -223,11 +218,20 @@ export default function Products() {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const id = querySnapshot.docs.map((doc) => doc.id);
-        console.log(data);
-        console.log(id);
         setProducts(data);
         setUid(id);
       });
+
+      db.collection("category_product")
+        .get()
+        .then((querySnapshot) => {
+          const datas = querySnapshot.docs.map((doc) => doc.data());
+          const ids = querySnapshot.docs.map((doc) => doc.id);
+          console.log(datas);
+          console.log(ids);
+          setCatProd(datas);
+          setCatProdUid(ids);
+        });
   }, []);
 
   const handleProdName = ({ target: { value }}) => {
@@ -302,33 +306,32 @@ export default function Products() {
                         fullWidth
                         className={classes.formControl}
                       >
-                        <InputLabel id="category-product">
-                          Category
-                        </InputLabel>
+                        <InputLabel>Category</InputLabel>
                         <Select
-                          labelId="category-product"
                           id="category"
                           //   value={age}
                           onChange={handleCategory}
                           label="Category"
                         >
-                          <MenuItem value="Ten">Ten</MenuItem>
-                          <MenuItem value="Twenty">Twenty</MenuItem>
-                          <MenuItem value="Thirty">Thirty</MenuItem>
+                          {catProd.map((cat, index) => (
+                            <MenuItem value={cat.name}>
+                              {cat.name}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
-                        <TextField
-                          variant="outlined"
-                          required
-                          fullWidth
-                          id="stock"
-                          name="stock"
-                          label="Stock"
-                          type="number"
-                          onChange={handleStock}
-                        />
+                      <TextField
+                        variant="outlined"
+                        required
+                        fullWidth
+                        id="stock"
+                        name="stock"
+                        label="Stock"
+                        type="number"
+                        onChange={handleStock}
+                      />
                     </Grid>
                   </Grid>
                   <TextField
@@ -354,7 +357,6 @@ export default function Products() {
                 </form>
               </div>
             </Grid>
-
             <Grid item xs={12} md={6} lg={4}>
               <div className="card-add" onClick={newProduct}></div>
             </Grid>
