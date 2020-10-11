@@ -170,8 +170,9 @@ class Dashboard extends Component {
 
         <div className={classes.root} style={{ marginTop: "15px" }}>
           <Grid container spacing={3}>
+            <Grid item xs={3}></Grid>
             {products.map((product, index) => (
-              <Grid key={product.name} item xs>
+              <Grid key={product.name} item xs={3}>
                 <Card className={classesCard.root}>
                   <CardActionArea>
                     <CardMedia
