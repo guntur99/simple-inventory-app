@@ -151,14 +151,20 @@ export default function Products() {
 
   useEffect(() => {
   const dbs = fire.firestore();
-      dbs.collection("category_product")
-        .get()
-        .then((querySnapshot) => {
-          const datas = querySnapshot.docs.map((doc) => doc.data());
-          const ids = querySnapshot.docs.map((doc) => doc.id);
-          setCatProd(datas);
-          setCatProdUid(ids);
-        });
+    dbs.enablePersistence().catch(function (err) {
+      if (err.code === "failed-precondition") {
+      } else if (err.code === "unimplemented") {
+      }
+    });
+
+    dbs.collection("category_product")
+      .get()
+      .then((querySnapshot) => {
+        const datas = querySnapshot.docs.map((doc) => doc.data());
+        const ids = querySnapshot.docs.map((doc) => doc.id);
+        setCatProd(datas);
+        setCatProdUid(ids);
+    });
   }, []);
 
   const handleCategory = ({ target: { value } }) => {

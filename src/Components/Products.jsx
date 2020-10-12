@@ -164,8 +164,18 @@ export default function Products() {
 
   const db = fire.firestore();
   useEffect(() => {
-  const db = fire.firestore();
-    db.collection("products")
+  const dbs = fire.firestore();
+
+    dbs.enablePersistence()
+      .catch(function(err) {
+          if (err.code === 'failed-precondition') {
+
+          } else if (err.code === 'unimplemented') {
+            
+          }
+      });
+
+    dbs.collection("products")
       //   .where("category_id", "==", 2)
       .get()
       .then((querySnapshot) => {
@@ -175,7 +185,7 @@ export default function Products() {
         setUid(id);
       });
 
-      db.collection("category_product")
+      dbs.collection("category_product")
         .get()
         .then((querySnapshot) => {
           const datas = querySnapshot.docs.map((doc) => doc.data());
