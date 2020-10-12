@@ -166,14 +166,14 @@ export default function Products() {
   useEffect(() => {
   const dbs = fire.firestore();
 
-    dbs.enablePersistence()
-      .catch(function(err) {
-          if (err.code === 'failed-precondition') {
+    // dbs.enablePersistence()
+    //   .catch(function(err) {
+    //       if (err.code === 'failed-precondition') {
 
-          } else if (err.code === 'unimplemented') {
+    //       } else if (err.code === 'unimplemented') {
             
-          }
-      });
+    //       }
+    //   });
 
     dbs.collection("products")
       //   .where("category_id", "==", 2)

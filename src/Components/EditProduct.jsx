@@ -209,7 +209,6 @@ export default function Products() {
                         fullWidth
                         id="name"
                         label="Product Name"
-                        // placeholder={products.name}
                         name="name"
                         type="text"
                         autoFocus

@@ -107,31 +107,12 @@ const useStyles = makeStyles((theme) => ({
 export default function Dashboard() {
   
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [uid, setUid] = useState([]);
 
   const classes = useStyles();
 
   const db = fire.firestore();
-
-  const editProduct = (id) => {
-    const datas = {
-      name: "Los Angeles 009 updated",
-      category_id: 1,
-      desc: "USA 009 updated",
-      stock: 15,
-    };
-
-    db.collection("products")
-      .doc(id)
-      .set(datas)
-      .then(() => {
-        console.log("Product updated!");
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-
-  };
 
   const deleteProduct = (id) => {
 
@@ -147,18 +128,33 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-
     const dbs = fire.firestore();
+
+    // dbs.enablePersistence().catch(function (err) {
+    //   if (err.code === "failed-precondition") {
+
+    //   } else if (err.code === "unimplemented") {
+
+    //   }
+    // });
+    // dbs.settings({
+    //   cacheSizeBytes: dbs.CACHE_SIZE_UNLIMITED,
+    // });
+
     dbs.collection("products")
-      //   .where("category_id", "==", 2)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const id = querySnapshot.docs.map((doc) => doc.id);
-        console.log(data);
-        console.log(id);
         setProducts(data);
         setUid(id);
+    });
+
+    dbs.collection("category_product")
+      .get()
+      .then((querySnapshot) => {
+        const datas = querySnapshot.docs.map((doc) => doc.data());
+        setCategories(datas);
       });
   }, []);
 
@@ -170,6 +166,26 @@ export default function Dashboard() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
+            <Grid key="product-counter" item xs={12} md={6} lg={6}>
+              <div className="card-counter">
+                <div className="container">
+                  <p>Total Product:</p>
+                  <h2>
+                    <b>{products.length}</b>
+                  </h2>
+                </div>
+              </div>
+            </Grid>
+            <Grid key="category-counter" item xs={12} md={6} lg={6}>
+              <div className="card-counter">
+                <div className="container">
+                  <p>Total Category:</p>
+                  <h2>
+                    <b>{categories.length}</b>
+                  </h2>
+                </div>
+              </div>
+            </Grid>
             {products.map((product, index) => (
               <Grid key={index} item xs={12} md={6} lg={3}>
                 <div className="card">
@@ -187,13 +203,8 @@ export default function Dashboard() {
                   </div>
                   <Grid container spacing={0}>
                     <Grid key={index} item xs={12} md={6} lg={6}>
-                      <button
-                        className="update"
-                        onClick={() => {
-                          editProduct(uid[index]);
-                        }}
-                      >
-                        Update
+                      <button className="update">
+                        <Link to={`/edit-product/${uid[index]}`}>Update</Link>
                       </button>
                     </Grid>
                     <Grid key={index} item xs={12} md={6} lg={6}>
