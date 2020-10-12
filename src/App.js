@@ -11,6 +11,7 @@ import PrivateRoute from "./routes/PrivateRoutes";
 import 'fontsource-roboto';
 import Products from './Components/Products';
 import Categories from './Components/Categories';
+import EditProduct from './Components/EditProduct';
 class App extends Component{
   constructor(props)
   {
@@ -49,6 +50,7 @@ class App extends Component{
               <PublicRoute exact path='/register' component={SignUp} isAuthenticated={isAuthenticated} />
               <PrivateRoute exact path='/dashboard' component={Dashboard2}  isAuthenticated={isAuthenticated} />
               <PrivateRoute exact path='/manage-products' component={Products}  isAuthenticated={isAuthenticated} />
+              <PrivateRoute exact path='/edit-product/:productId' component={EditProduct}  isAuthenticated={isAuthenticated} />
               <PrivateRoute exact path='/manage-categories' component={Categories}  isAuthenticated={isAuthenticated} />
               <Redirect to={isAuthenticated ? '/dashboard' : '/login'} />
           </Switch>

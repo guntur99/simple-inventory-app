@@ -60,3 +60,11 @@ a:hover {
 .link-menu {
   text-decoration: none;
 }
+
+.d-none {
+  display: none;
+}
+
+.d-show {
+  display: initial;
+}

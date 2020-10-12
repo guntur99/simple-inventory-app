@@ -14,7 +14,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 
-import { Link } from "react-router-dom";
+import { Link, useRouteMatch } from "react-router-dom";
 import "./Dashboard.css";
 import Button from "@material-ui/core/Button";
 
@@ -117,139 +117,78 @@ export default function Products() {
   const [uid, setUid] = useState([]);
 
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const [productName, setProductName] = useState('');
-  const [imgLink, setImgLink] = useState('');
-  const [category, setCategory] = useState('');
+  const [productName, setProductName] = useState("");
+  const [imgLink, setImgLink] = useState("");
+  const [category, setCategory] = useState("");
   const [stock, setStock] = useState(0);
-  const [desc, setDesc] = useState('');
+  const [desc, setDesc] = useState("");
   const [fresh, setFresh] = useState({});
   const [catProd, setCatProd] = useState([]);
   const [catProdUid, setCatProdUid] = useState([]);
   const [editProd, setEditProd] = useState([]);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const logout = () => {
-    fire.auth().signOut();
-  };
-
-  const newProduct = () => {
-      console.log('hahaha');
-  }
-
-  const classesCard = makeStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 250,
-    },
-  });
-
 
   const editProduct = (id) => {
-    // const datas = {
-    //   name: "Los Angeles 009 updated",
-    //   category_id: 1,
-    //   desc: "USA 009 updated",
-    //   stock: 15,
-    // };
+    const datas = {
+      name: productName,
+      img_link: imgLink,
+      category: category,
+      desc: desc,
+      stock: stock,
+    };
 
-    // db.collection("products")
-    //   .doc(id)
-    //   .set(datas)
-    //   .then(() => {
-    //     console.log("Product updated!");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error: ", error);
-    //   });
-
-      db.collection("products")
-        .doc(id)
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.data();
-          // console.log(data);
-          setEditProd(data);
-        })
-        .catch((error) => {
-          console.error("Error: ", error);
-        });
-        console.log('hahaha'+editProd);
-  };
-
-  const deleteProduct = (id) => {
     db.collection("products")
       .doc(id)
-      .delete()
+      .set(datas)
       .then(() => {
-        console.log("Product deleted!");
+        console.log("Product updated!");
       })
       .catch((error) => {
         console.error("Error: ", error);
       });
-  };
 
-  const createProduct = () => {
-    db.collection("products")
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        const uid = data.length;
-        console.log(uid);
-
-        db.collection("products")
-          .doc("inv-" + uid)
-          .set({
-            name: productName,
-            img_link: imgLink,
-            category: category,
-            desc: desc,
-            stock: stock,
-          })
-          .then(() => {
-            console.log("Product Added!");
-          })
-          .catch((error) => {
-            console.error("Error: ", error);
-          });
-      });
+    // db.collection("products")
+    //   .doc(id)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     const data = querySnapshot.data();
+    //     // console.log(data);
+    //     setEditProd(data);
+    //   })
+    //   .catch((error) => {
+    //     console.error("Error: ", error);
+    //   });
+    // console.log("hahaha" + editProd);
   };
 
   const db = fire.firestore();
+
+  const match = useRouteMatch("/edit-product/:productId");
+  const prodId = match.params.productId;
+//   console.log(match.params.productId);
   useEffect(() => {
-  const db = fire.firestore();
+    const db = fire.firestore();
     db.collection("products")
-      //   .where("category_id", "==", 2)
+      .doc(prodId)
       .get()
       .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        const id = querySnapshot.docs.map((doc) => doc.id);
+        const data = querySnapshot.data();
+        console.log(data);
         setProducts(data);
-        setUid(id);
+        // setUid(id);
       });
 
-      db.collection("category_product")
-        .get()
-        .then((querySnapshot) => {
-          const datas = querySnapshot.docs.map((doc) => doc.data());
-          const ids = querySnapshot.docs.map((doc) => doc.id);
-          // console.log(datas);
-          // console.log(ids);
-          setCatProd(datas);
-          setCatProdUid(ids);
-        });
+    db.collection("category_product")
+      .get()
+      .then((querySnapshot) => {
+        const datas = querySnapshot.docs.map((doc) => doc.data());
+        const ids = querySnapshot.docs.map((doc) => doc.id);
+        setCatProd(datas);
+        setCatProdUid(ids);
+      });
   }, []);
 
-  const handleProdName = ({ target: { value }}) => {
-      console.log(value);
+  const handleProdName = ({ target: { value } }) => {
+    console.log(value);
     // if (value === "") setP(0);
     setProductName(value);
   };
@@ -281,7 +220,7 @@ export default function Products() {
             <Grid item xs={12} md={6} lg={8}>
               <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                  Create New Product
+                  Edit Product
                 </Typography>
                 <form className={classes.form} noValidate>
                   <Grid container spacing={3}>
@@ -293,11 +232,12 @@ export default function Products() {
                         fullWidth
                         id="name"
                         label="Product Name"
+                        // placeholder={products.name}
                         name="name"
                         type="text"
                         autoFocus
                         onChange={handleProdName}
-                        // value={productName}
+                        // value={products.name}
                       />
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
@@ -311,6 +251,7 @@ export default function Products() {
                         label="Image Link"
                         type="text"
                         onChange={handleImgLink}
+                        // value={products.img_link}
                       />
                     </Grid>
                     <Grid item xs={12} md={6} lg={6}>
@@ -343,6 +284,7 @@ export default function Products() {
                         label="Stock"
                         type="number"
                         onChange={handleStock}
+                        // value={products.stock}
                       />
                     </Grid>
                   </Grid>
@@ -356,15 +298,16 @@ export default function Products() {
                     label="Product Description"
                     type="text"
                     onChange={handleDesc}
+                    // value={products.desc}
                   />
                   <Button
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={() => createProduct()}
+                    onClick={() => editProduct(prodId)}
                   >
-                    Create Product
+                    Edit Product
                   </Button>
                 </form>
               </div>
@@ -378,52 +321,6 @@ export default function Products() {
                 />
               </div>
             </Grid>
-          </Grid>
-          <br></br>
-          <hr></hr>
-          <br></br>
-
-          <Grid container spacing={3}>
-            {products.map((product, index) => (
-              <Grid key={index} item xs={12} md={6} lg={3}>
-                <div className="card">
-                  <img
-                    className="img-cover"
-                    src={product.img_link}
-                    alt={product.name}
-                    style={{ width: "100%" }}
-                  />
-                  <div className="container">
-                    <h4>
-                      <b>{product.name}</b>
-                    </h4>
-                    <p>{product.desc}</p>
-                  </div>
-                  <Grid container spacing={0}>
-                    <Grid key={index} item xs={12} md={6} lg={6}>
-                      <button
-                        className="update"
-                        // onClick={() => {
-                        //   editProduct(uid[index]);
-                        // }}
-                      >
-                        <Link to={`/edit-product/${uid[index]}`}>Update</Link>
-                      </button>
-                    </Grid>
-                    <Grid key={index} item xs={12} md={6} lg={6}>
-                      <button
-                        className="delete"
-                        onClick={() => {
-                          deleteProduct(uid[index]);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </Grid>
-                  </Grid>
-                </div>
-              </Grid>
-            ))}
           </Grid>
           <Box pt={4}>
             <Copyright />
