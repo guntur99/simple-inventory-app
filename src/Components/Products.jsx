@@ -117,7 +117,6 @@ export default function Products() {
   const [uid, setUid] = useState([]);
 
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
   const [productName, setProductName] = useState('');
   const [imgLink, setImgLink] = useState('');
   const [category, setCategory] = useState('');
@@ -126,22 +125,6 @@ export default function Products() {
   const [fresh, setFresh] = useState({});
   const [catProd, setCatProd] = useState([]);
   const [catProdUid, setCatProdUid] = useState([]);
-  const [editProd, setEditProd] = useState([]);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const logout = () => {
-    fire.auth().signOut();
-  };
-
-  const newProduct = () => {
-      console.log('hahaha');
-  }
 
   const classesCard = makeStyles({
     root: {
@@ -153,37 +136,21 @@ export default function Products() {
   });
 
 
-  const editProduct = (id) => {
-    // const datas = {
-    //   name: "Los Angeles 009 updated",
-    //   category_id: 1,
-    //   desc: "USA 009 updated",
-    //   stock: 15,
-    // };
+  // const editProduct = (id) => {
 
-    // db.collection("products")
-    //   .doc(id)
-    //   .set(datas)
-    //   .then(() => {
-    //     console.log("Product updated!");
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error: ", error);
-    //   });
-
-      db.collection("products")
-        .doc(id)
-        .get()
-        .then((querySnapshot) => {
-          const data = querySnapshot.data();
-          // console.log(data);
-          setEditProd(data);
-        })
-        .catch((error) => {
-          console.error("Error: ", error);
-        });
-        console.log('hahaha'+editProd);
-  };
+  //     db.collection("products")
+  //       .doc(id)
+  //       .get()
+  //       .then((querySnapshot) => {
+  //         const data = querySnapshot.data();
+  //         // console.log(data);
+  //         setEditProd(data);
+  //       })
+  //       .catch((error) => {
+  //         console.error("Error: ", error);
+  //       });
+  //       console.log('hahaha'+editProd);
+  // };
 
   const deleteProduct = (id) => {
     db.collection("products")
@@ -203,7 +170,6 @@ export default function Products() {
       .then((querySnapshot) => {
         const data = querySnapshot.docs.map((doc) => doc.data());
         const uid = data.length;
-        console.log(uid);
 
         db.collection("products")
           .doc("inv-" + uid)
@@ -241,32 +207,24 @@ export default function Products() {
         .then((querySnapshot) => {
           const datas = querySnapshot.docs.map((doc) => doc.data());
           const ids = querySnapshot.docs.map((doc) => doc.id);
-          // console.log(datas);
-          // console.log(ids);
           setCatProd(datas);
           setCatProdUid(ids);
         });
   }, []);
 
   const handleProdName = ({ target: { value }}) => {
-      console.log(value);
-    // if (value === "") setP(0);
     setProductName(value);
   };
   const handleImgLink = ({ target: { value } }) => {
-    console.log(value);
     setImgLink(value);
   };
   const handleCategory = ({ target: { value } }) => {
-    console.log(value);
     setCategory(value);
   };
   const handleStock = ({ target: { value } }) => {
-    console.log(value);
     setStock(value);
   };
   const handleDesc = ({ target: { value } }) => {
-    console.log(value);
     setDesc(value);
   };
 

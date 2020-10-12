@@ -145,26 +145,12 @@ export default function Products() {
       .catch((error) => {
         console.error("Error: ", error);
       });
-
-    // db.collection("products")
-    //   .doc(id)
-    //   .get()
-    //   .then((querySnapshot) => {
-    //     const data = querySnapshot.data();
-    //     // console.log(data);
-    //     setEditProd(data);
-    //   })
-    //   .catch((error) => {
-    //     console.error("Error: ", error);
-    //   });
-    // console.log("hahaha" + editProd);
   };
 
   const db = fire.firestore();
 
   const match = useRouteMatch("/edit-product/:productId");
   const prodId = match.params.productId;
-//   console.log(match.params.productId);
   useEffect(() => {
     const db = fire.firestore();
     db.collection("products")
@@ -172,9 +158,7 @@ export default function Products() {
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.data();
-        console.log(data);
         setProducts(data);
-        // setUid(id);
       });
 
     db.collection("category_product")
@@ -188,24 +172,18 @@ export default function Products() {
   }, []);
 
   const handleProdName = ({ target: { value } }) => {
-    console.log(value);
-    // if (value === "") setP(0);
     setProductName(value);
   };
   const handleImgLink = ({ target: { value } }) => {
-    console.log(value);
     setImgLink(value);
   };
   const handleCategory = ({ target: { value } }) => {
-    console.log(value);
     setCategory(value);
   };
   const handleStock = ({ target: { value } }) => {
-    console.log(value);
     setStock(value);
   };
   const handleDesc = ({ target: { value } }) => {
-    console.log(value);
     setDesc(value);
   };
 

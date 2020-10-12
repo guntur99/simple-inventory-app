@@ -133,47 +133,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Products() {
-  const [products, setProducts] = useState([]);
-  const [uid, setUid] = useState([]);
+  const [catProd, setCatProd] = useState([]);
+  const [catProdUid, setCatProdUid] = useState([]);
 
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const logout = () => {
-    fire.auth().signOut();
-  };
-
-  const classesCard = makeStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 250,
-    },
-  });
 
   const db = fire.firestore();
 
   const editProduct = (id) => {
     const datas = {
       name: "Los Angeles 009 updated",
-      category_id: 1,
-      desc: "USA 009 updated",
-      stock: 15,
     };
 
-    db.collection("products")
+    db.collection("category_product")
       .doc(id)
       .set(datas)
       .then(() => {
-        console.log("Product updated!");
+        console.log("Product Category updated!");
       })
       .catch((error) => {
         console.error("Error: ", error);
@@ -181,11 +157,11 @@ export default function Products() {
   };
 
   const deleteProduct = (id) => {
-    db.collection("products")
+    db.collection("category_product")
       .doc(id)
       .delete()
       .then(() => {
-        console.log("Product deleted!");
+        console.log("Product Category deleted!");
       })
       .catch((error) => {
         console.error("Error: ", error);
@@ -193,17 +169,14 @@ export default function Products() {
   };
 
   useEffect(() => {
-    db.collection("products")
-      //   .where("category_id", "==", 2)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        const id = querySnapshot.docs.map((doc) => doc.id);
-        console.log(data);
-        console.log(id);
-        setProducts(data);
-        setUid(id);
-      });
+      db.collection("category_product")
+        .get()
+        .then((querySnapshot) => {
+          const datas = querySnapshot.docs.map((doc) => doc.data());
+          const ids = querySnapshot.docs.map((doc) => doc.id);
+          setCatProd(datas);
+          setCatProdUid(ids);
+        });
   }, []);
 
   return (
@@ -214,27 +187,20 @@ export default function Products() {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           <Grid container spacing={3}>
-            {products.map((product, index) => (
+            {catProd.map((category, index) => (
               <Grid key={index} item xs={12} md={6} lg={3}>
-                <div className="card">
-                  <img
-                    className="img-cover"
-                    src={product.img_link}
-                    alt={product.name}
-                    style={{ width: "100%" }}
-                  />
+                <div className="card-cat-prod">
                   <div className="container">
                     <h4>
-                      <b>{product.name}</b>
+                      <b>{category.name}</b>
                     </h4>
-                    <p>{product.desc}</p>
                   </div>
                   <Grid container spacing={0}>
                     <Grid key={index} item xs={12} md={6} lg={6}>
                       <button
                         className="update"
                         onClick={() => {
-                          editProduct(uid[index]);
+                          editProduct(catProdUid[index]);
                         }}
                       >
                         Update
@@ -244,7 +210,7 @@ export default function Products() {
                       <button
                         className="delete"
                         onClick={() => {
-                          deleteProduct(uid[index]);
+                          deleteProduct(catProdUid[index]);
                         }}
                       >
                         Delete
