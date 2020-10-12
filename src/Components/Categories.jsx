@@ -15,6 +15,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import Menu from "./Menu";
+import TextField from "@material-ui/core/TextField";
 
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -135,12 +136,33 @@ const useStyles = makeStyles((theme) => ({
 export default function Products() {
   const [catProd, setCatProd] = useState([]);
   const [catProdUid, setCatProdUid] = useState([]);
+  const [catName, setCatName] = useState([]);
 
   const classes = useStyles();
-
   const db = fire.firestore();
 
-  const editProduct = (id) => {
+  const createCategory = () => {
+    db.collection("category_product")
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => doc.data());
+        const uid = data.length;
+
+        db.collection("category_product")
+          .doc("cat-"+uid)
+          .set({
+            name: catName,
+          })
+          .then(() => {
+            console.log("Category Added!");
+          })
+          .catch((error) => {
+            console.error("Error: ", error);
+          });
+      });
+  };
+
+  const editCategory = (id) => {
     const datas = {
       name: "Los Angeles 009 updated",
     };
@@ -156,7 +178,7 @@ export default function Products() {
       });
   };
 
-  const deleteProduct = (id) => {
+  const deleteCategory = (id) => {
     db.collection("category_product")
       .doc(id)
       .delete()
@@ -179,6 +201,10 @@ export default function Products() {
         });
   }, []);
 
+  const handleCategory = ({ target: { value } }) => {
+    setCatName(value);
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -186,6 +212,49 @@ export default function Products() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} lg={8}>
+              <div className={classes.paper}>
+                <Typography component="h1" variant="h5">
+                  Create New Product
+                </Typography>
+                <form className={classes.form} noValidate>
+                  <TextField
+                    variant="outlined"
+                    margin="normal"
+                    required
+                    fullWidth
+                    id="desc"
+                    name="desc"
+                    label="Product Description"
+                    type="text"
+                    onChange={handleCategory}
+                  />
+                  <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={() => createCategory()}
+                  >
+                    Create Category
+                  </Button>
+                </form>
+              </div>
+            </Grid>
+            <Grid item xs={12} md={6} lg={4}>
+              <div className="card-cat-img">
+                <img
+                  className="img-cover"
+                  // src={imgLink}
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+            </Grid>
+          </Grid>
+          <br></br>
+          <hr></hr>
+          <br></br>
           <Grid container spacing={3}>
             {catProd.map((category, index) => (
               <Grid key={index} item xs={12} md={6} lg={3}>
@@ -200,7 +269,7 @@ export default function Products() {
                       <button
                         className="update"
                         onClick={() => {
-                          editProduct(catProdUid[index]);
+                          editCategory(catProdUid[index]);
                         }}
                       >
                         Update
@@ -210,7 +279,7 @@ export default function Products() {
                       <button
                         className="delete"
                         onClick={() => {
-                          deleteProduct(catProdUid[index]);
+                          deleteCategory(catProdUid[index]);
                         }}
                       >
                         Delete
