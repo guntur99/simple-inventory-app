@@ -1,42 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import fire from "../config/firebase";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Menu from "./Menu";
 import TextField from "@material-ui/core/TextField";
 
-import { Link } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import image from "../images/image.jpg";
+import { Link, useRouteMatch } from "react-router-dom";
 import "./Dashboard.css";
-// import { mainListItems, secondaryListItems } from "../Components/Menu";
-
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import CategoryIcon from "@material-ui/icons/Category";
-
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 
 function Copyright() {
@@ -141,35 +115,14 @@ export default function Products() {
   const classes = useStyles();
   const db = fire.firestore();
 
-  const createCategory = () => {
-    db.collection("category_product")
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.docs.map((doc) => doc.data());
-        const uid = data.length;
-
-        db.collection("category_product")
-          .doc("cat-"+uid)
-          .set({
-            name: catName,
-          })
-          .then(() => {
-            console.log("Category Added!");
-          })
-          .catch((error) => {
-            console.error("Error: ", error);
-          });
-      });
-  };
-
   const editCategory = (id) => {
-    const datas = {
-      name: "Los Angeles 009 updated",
+    const data = {
+      name: catName,
     };
 
     db.collection("category_product")
       .doc(id)
-      .set(datas)
+      .set(data)
       .then(() => {
         console.log("Product Category updated!");
       })
@@ -178,27 +131,16 @@ export default function Products() {
       });
   };
 
-  const deleteCategory = (id) => {
-    db.collection("category_product")
-      .doc(id)
-      .delete()
-      .then(() => {
-        console.log("Product Category deleted!");
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  };
-
+  const match = useRouteMatch("/edit-category/:categoryId");
+  const catId = match.params.categoryId;
   useEffect(() => {
-      db.collection("category_product")
-        .get()
-        .then((querySnapshot) => {
-          const datas = querySnapshot.docs.map((doc) => doc.data());
-          const ids = querySnapshot.docs.map((doc) => doc.id);
-          setCatProd(datas);
-          setCatProdUid(ids);
-        });
+    db.collection("category_product")
+      .doc(catId)
+      .get()
+      .then((querySnapshot) => {
+        const data = querySnapshot.data();
+        setCatProd(data);
+      });
   }, []);
 
   const handleCategory = ({ target: { value } }) => {
@@ -216,7 +158,7 @@ export default function Products() {
             <Grid item xs={12} md={6} lg={8}>
               <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                  Create New Product
+                  Edit Product
                 </Typography>
                 <form className={classes.form} noValidate>
                   <TextField
@@ -235,9 +177,9 @@ export default function Products() {
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={() => createCategory()}
+                    onClick={() => editCategory(catId)}
                   >
-                    Create Category
+                    Edit Category
                   </Button>
                 </form>
               </div>
@@ -249,46 +191,9 @@ export default function Products() {
                   // src={imgLink}
                   style={{ width: "100%", height: "100%" }}
                 />
+                <h4>{catProd.name}</h4>
               </div>
             </Grid>
-          </Grid>
-          <br></br>
-          <hr></hr>
-          <br></br>
-          <Grid container spacing={3}>
-            {catProd.map((category, index) => (
-              <Grid key={index} item xs={12} md={6} lg={3}>
-                <div className="card-cat-prod">
-                  <div className="container">
-                    <h4>
-                      <b>{category.name}</b>
-                    </h4>
-                  </div>
-                  <Grid container spacing={0}>
-                    <Grid key={index} item xs={12} md={6} lg={6}>
-                      <button
-                        className="update"
-                        // onClick={() => {
-                        //   editCategory(catProdUid[index]);
-                        // }}
-                      >
-                        <Link to={`/edit-category/${catProdUid[index]}`}>Update</Link>
-                      </button>
-                    </Grid>
-                    <Grid key={index} item xs={12} md={6} lg={6}>
-                      <button
-                        className="delete"
-                        onClick={() => {
-                          deleteCategory(catProdUid[index]);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </Grid>
-                  </Grid>
-                </div>
-              </Grid>
-            ))}
           </Grid>
           <Box pt={4}>
             <Copyright />
