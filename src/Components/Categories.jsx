@@ -1,42 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import fire from "../config/firebase";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
 import Menu from "./Menu";
 import TextField from "@material-ui/core/TextField";
 
 import { Link } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import image from "../images/image.jpg";
 import "./Dashboard.css";
-// import { mainListItems, secondaryListItems } from "../Components/Menu";
 
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import CategoryIcon from "@material-ui/icons/Category";
-
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 
 function Copyright() {
@@ -162,22 +137,6 @@ export default function Products() {
       });
   };
 
-  const editCategory = (id) => {
-    const datas = {
-      name: "Los Angeles 009 updated",
-    };
-
-    db.collection("category_product")
-      .doc(id)
-      .set(datas)
-      .then(() => {
-        console.log("Product Category updated!");
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
-  };
-
   const deleteCategory = (id) => {
     db.collection("category_product")
       .doc(id)
@@ -191,7 +150,8 @@ export default function Products() {
   };
 
   useEffect(() => {
-      db.collection("category_product")
+  const dbs = fire.firestore();
+      dbs.collection("category_product")
         .get()
         .then((querySnapshot) => {
           const datas = querySnapshot.docs.map((doc) => doc.data());
@@ -247,6 +207,7 @@ export default function Products() {
                 <img
                   className="img-cover"
                   // src={imgLink}
+                  alt="L cover"
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>

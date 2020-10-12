@@ -1,42 +1,14 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import fire from "../config/firebase";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Drawer from "@material-ui/core/Drawer";
 import Box from "@material-ui/core/Box";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import List from "@material-ui/core/List";
 import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
-import IconButton from "@material-ui/core/IconButton";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import Paper from "@material-ui/core/Paper";
-import { Link, Redirect } from "react-router-dom";
-import MenuIcon from "@material-ui/icons/Menu";
-import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
-import image from "../images/image.jpg";
+import { Link } from "react-router-dom";
 import './Dashboard.css';
 import Menu from "./Menu";
-// import { mainListItems, secondaryListItems } from "../Components/Menu";
-
-
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import ViewListIcon from "@material-ui/icons/ViewList";
-import CategoryIcon from "@material-ui/icons/Category";
-
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Button from "@material-ui/core/Button";
 
 function Copyright() {
   return (
@@ -138,27 +110,6 @@ export default function Dashboard() {
   const [uid, setUid] = useState([]);
 
   const classes = useStyles();
-  const [open, setOpen] = useState(true);
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-  const logout = () => {
-    fire.auth().signOut();
-  }
-
-  const classesCard = makeStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 250,
-    },
-  });
 
   const db = fire.firestore();
 
@@ -196,7 +147,9 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    db.collection("products")
+
+    const dbs = fire.firestore();
+    dbs.collection("products")
       //   .where("category_id", "==", 2)
       .get()
       .then((querySnapshot) => {

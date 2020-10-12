@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import fire from "../config/firebase";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
@@ -122,35 +121,9 @@ export default function Products() {
   const [category, setCategory] = useState('');
   const [stock, setStock] = useState(0);
   const [desc, setDesc] = useState('');
-  const [fresh, setFresh] = useState({});
+  // const [fresh, setFresh] = useState({});
   const [catProd, setCatProd] = useState([]);
-  const [catProdUid, setCatProdUid] = useState([]);
-
-  const classesCard = makeStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 250,
-    },
-  });
-
-
-  // const editProduct = (id) => {
-
-  //     db.collection("products")
-  //       .doc(id)
-  //       .get()
-  //       .then((querySnapshot) => {
-  //         const data = querySnapshot.data();
-  //         // console.log(data);
-  //         setEditProd(data);
-  //       })
-  //       .catch((error) => {
-  //         console.error("Error: ", error);
-  //       });
-  //       console.log('hahaha'+editProd);
-  // };
+  // const [catProdUid, setCatProdUid] = useState([]);
 
   const deleteProduct = (id) => {
     db.collection("products")
@@ -206,9 +179,9 @@ export default function Products() {
         .get()
         .then((querySnapshot) => {
           const datas = querySnapshot.docs.map((doc) => doc.data());
-          const ids = querySnapshot.docs.map((doc) => doc.id);
+          // const ids = querySnapshot.docs.map((doc) => doc.id);
           setCatProd(datas);
-          setCatProdUid(ids);
+          // setCatProdUid(ids);
         });
   }, []);
 
@@ -332,6 +305,7 @@ export default function Products() {
                 <img
                   className="img-cover"
                   src={imgLink}
+                  alt={productName}
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>

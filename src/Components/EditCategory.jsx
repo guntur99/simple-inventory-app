@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Products() {
   const [catProd, setCatProd] = useState([]);
-  const [catProdUid, setCatProdUid] = useState([]);
+//   const [catProdUid, setCatProdUid] = useState([]);
   const [catName, setCatName] = useState([]);
 
   const classes = useStyles();
@@ -132,16 +132,19 @@ export default function Products() {
   };
 
   const match = useRouteMatch("/edit-category/:categoryId");
-  const catId = match.params.categoryId;
+  const catIdG = match.params.categoryId;
   useEffect(() => {
-    db.collection("category_product")
+    const dbs = fire.firestore();
+    const catId = match.params.categoryId;
+    dbs
+      .collection("category_product")
       .doc(catId)
       .get()
       .then((querySnapshot) => {
         const data = querySnapshot.data();
         setCatProd(data);
       });
-  }, []);
+  }, [match.params.categoryId]);
 
   const handleCategory = ({ target: { value } }) => {
     setCatName(value);
@@ -177,7 +180,7 @@ export default function Products() {
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={() => editCategory(catId)}
+                    onClick={() => editCategory(catIdG)}
                   >
                     Edit Category
                   </Button>
@@ -186,11 +189,6 @@ export default function Products() {
             </Grid>
             <Grid item xs={12} md={6} lg={4}>
               <div className="card-cat-img">
-                <img
-                  className="img-cover"
-                  // src={imgLink}
-                  style={{ width: "100%", height: "100%" }}
-                />
                 <h4>{catProd.name}</h4>
               </div>
             </Grid>

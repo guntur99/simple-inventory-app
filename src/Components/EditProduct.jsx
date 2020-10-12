@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import fire from "../config/firebase";
-import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
@@ -113,8 +112,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Products() {
-  const [products, setProducts] = useState([]);
-  const [uid, setUid] = useState([]);
+//   const [products, setProducts] = useState([]);
+//   const [uid, setUid] = useState([]);
 
   const classes = useStyles();
   const [productName, setProductName] = useState("");
@@ -122,10 +121,10 @@ export default function Products() {
   const [category, setCategory] = useState("");
   const [stock, setStock] = useState(0);
   const [desc, setDesc] = useState("");
-  const [fresh, setFresh] = useState({});
+//   const [fresh, setFresh] = useState({});
   const [catProd, setCatProd] = useState([]);
-  const [catProdUid, setCatProdUid] = useState([]);
-  const [editProd, setEditProd] = useState([]);
+//   const [catProdUid, setCatProdUid] = useState([]);
+//   const [editProd, setEditProd] = useState([]);
 
   const editProduct = (id) => {
     const datas = {
@@ -153,21 +152,21 @@ export default function Products() {
   const prodId = match.params.productId;
   useEffect(() => {
     const db = fire.firestore();
-    db.collection("products")
-      .doc(prodId)
-      .get()
-      .then((querySnapshot) => {
-        const data = querySnapshot.data();
-        setProducts(data);
-      });
+    // db.collection("products")
+    //   .doc(prodId)
+    //   .get()
+    //   .then((querySnapshot) => {
+    //     const data = querySnapshot.data();
+    //     setProducts(data);
+    //   });
 
     db.collection("category_product")
       .get()
       .then((querySnapshot) => {
         const datas = querySnapshot.docs.map((doc) => doc.data());
-        const ids = querySnapshot.docs.map((doc) => doc.id);
+        // const ids = querySnapshot.docs.map((doc) => doc.id);
         setCatProd(datas);
-        setCatProdUid(ids);
+        // setCatProdUid(ids);
       });
   }, []);
 
@@ -295,6 +294,7 @@ export default function Products() {
                 <img
                   className="img-cover"
                   src={imgLink}
+                  alt={productName}
                   style={{ width: "100%", height: "100%" }}
                 />
               </div>

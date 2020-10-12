@@ -3,7 +3,6 @@ import './App.css';
 import fire from './config/firebase';
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
-import Dashboard from './Components/Dashboard';
 import Dashboard2 from "./Components/Dashboard2";
 import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import PublicRoute from "./routes/PublicRoutes";
