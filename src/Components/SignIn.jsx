@@ -38,7 +38,7 @@ class SignIn extends Component {
 
         const classes = makeStyles((theme) => ({
           paper: {
-            marginTop: theme.spacing(8),
+            marginTop: "20px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -57,61 +57,59 @@ class SignIn extends Component {
         }));
         
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <div className={classes.paper}>
-                    <Typography component="h1" variant="h5">
-                    Sign in
-                    </Typography>
-                    <form className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        autoFocus
-                        onChange={this.handleChange}
-                        value={this.state.email}
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        onChange={this.handleChange}
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={this.login}
-                    >
-                        Sign In
-                    </Button>
-                    <Grid container>
-                        <Grid item>
-                        <Link to={'/register'}>
-                            Don't have an account? Sign Up
-                        </Link>
-                        </Grid>
-                    </Grid>
-                    </form>
-                </div>
-            </Container>
-            
-        )
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <div style={{ marginTop: "100px" }}>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
+              <form className={classes.form} noValidate>
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  autoFocus
+                  onChange={this.handleChange}
+                  value={this.state.email}
+                />
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={this.handleChange}
+                />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  style={{ marginTop: "15px" }}
+                  className={classes.submit}
+                  onClick={this.login}
+                >
+                  Sign In
+                </Button>
+                <Grid container>
+                  <Grid item style={{ marginTop: "15px" }}>
+                    <Link to={"/register"}>Don't have an account? Sign Up</Link>
+                  </Grid>
+                </Grid>
+              </form>
+            </div>
+          </Container>
+        );
     }
 }
 export default SignIn;

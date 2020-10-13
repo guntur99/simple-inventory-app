@@ -11,6 +11,7 @@ import TextField from "@material-ui/core/TextField";
 
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
+import DummyImage from "../images/dummy_img.jpg";
 
 import Button from "@material-ui/core/Button";
 
@@ -212,7 +213,7 @@ export default function Products() {
               <div className="card-cat-img">
                 <img
                   className="img-cover"
-                  // src={imgLink}
+                  src={DummyImage}
                   alt="L cover"
                   style={{ width: "100%", height: "100%" }}
                 />
@@ -226,6 +227,12 @@ export default function Products() {
             {catProd.map((category, index) => (
               <Grid key={index} item xs={12} md={6} lg={3}>
                 <div className="card-cat-prod">
+                  <img
+                    className="img-cover"
+                    src={DummyImage}
+                    alt="Dummy Cover"
+                    style={{ width: "100%" }}
+                  />
                   <div className="container">
                     <h4>
                       <b>{category.name}</b>
@@ -239,7 +246,9 @@ export default function Products() {
                         //   editCategory(catProdUid[index]);
                         // }}
                       >
-                        <Link to={`/edit-category/${catProdUid[index]}`}>Update</Link>
+                        <Link to={`/edit-category/${catProdUid[index]}`}>
+                          Update
+                        </Link>
                       </button>
                     </Grid>
                     <Grid key={index} item xs={12} md={6} lg={6}>

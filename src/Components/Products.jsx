@@ -16,6 +16,7 @@ import FormControl from "@material-ui/core/FormControl";
 import { Link } from "react-router-dom";
 import "./Dashboard.css";
 import Button from "@material-ui/core/Button";
+import DummyImage from "../images/dummy_img.jpg";
 
 function Copyright() {
   return (
@@ -314,7 +315,7 @@ export default function Products() {
               <div className="card-add">
                 <img
                   className="img-cover"
-                  src={imgLink}
+                  src={imgLink.length > 0 ? imgLink : DummyImage}
                   alt={productName}
                   style={{ width: "100%", height: "100%" }}
                 />
@@ -339,6 +340,7 @@ export default function Products() {
                     <h4>
                       <b>{product.name}</b>
                     </h4>
+                    <p>Stock: {product.stock} item(s)</p>
                     <p>{product.desc}</p>
                   </div>
                   <Grid container spacing={0}>

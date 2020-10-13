@@ -61,7 +61,7 @@ class SignUp extends Component {
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
+        <div className={classes.paper} style={{ marginTop: "100px" }}>
           <Typography component="h1" variant="h5">
             Sign Up
           </Typography>
@@ -97,13 +97,14 @@ class SignUp extends Component {
               fullWidth
               variant="contained"
               color="primary"
+              style={{ marginTop: "15px" }}
               className={classes.submit}
               onClick={this.signup}
             >
               Sign Up
             </Button>
             <Grid container>
-              <Grid item>
+              <Grid item style={{ marginTop: "15px" }}>
                 <Link variant="body2" to={`/login`}>
                   Already have an account? Sign In
                 </Link>

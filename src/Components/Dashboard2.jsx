@@ -170,8 +170,8 @@ export default function Dashboard() {
               <div className="card-counter">
                 <div className="container">
                   <p>Total Product:</p>
-                  <h2>
-                    <b>{products.length}</b>
+                  <h2 style={{ fontSize: "64px" }}>
+                    <b>{products.length}</b> Products
                   </h2>
                 </div>
               </div>
@@ -180,8 +180,8 @@ export default function Dashboard() {
               <div className="card-counter">
                 <div className="container">
                   <p>Total Category:</p>
-                  <h2>
-                    <b>{categories.length}</b>
+                  <h2 style={{ fontSize: "64px" }}>
+                    <b>{categories.length}</b> Categories
                   </h2>
                 </div>
               </div>
@@ -199,6 +199,7 @@ export default function Dashboard() {
                     <h4>
                       <b>{product.name}</b>
                     </h4>
+                    <p>Stock: {product.stock} item(s)</p>
                     <p>{product.desc}</p>
                   </div>
                   <Grid container spacing={0}>
