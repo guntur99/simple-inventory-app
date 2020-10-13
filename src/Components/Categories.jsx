@@ -246,7 +246,10 @@ export default function Products() {
                         //   editCategory(catProdUid[index]);
                         // }}
                       >
-                        <Link to={`/edit-category/${catProdUid[index]}`}>
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          to={`/edit-category/${catProdUid[index]}`}
+                        >
                           Update
                         </Link>
                       </button>

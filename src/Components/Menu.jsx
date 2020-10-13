@@ -154,19 +154,25 @@ export default function Menu(){
               <DashboardIcon />
             </ListItemIcon>
 
-            <Link to={`/dashboard`}>Dashboard</Link>
+            <Link style={{ textDecoration: "none" }} to={`/dashboard`}>
+              Dashboard
+            </Link>
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <ViewListIcon />
             </ListItemIcon>
-            <Link to={`/manage-products`}>Products</Link>
+            <Link style={{ textDecoration: "none" }} to={`/manage-products`}>
+              Products
+            </Link>
           </ListItem>
           <ListItem button>
             <ListItemIcon>
               <CategoryIcon />
             </ListItemIcon>
-            <Link to={`/manage-categories`}>Categories</Link>
+            <Link style={{ textDecoration: "none" }} to={`/manage-categories`}>
+              Categories
+            </Link>
           </ListItem>
           <Divider />
           <ListItem button>

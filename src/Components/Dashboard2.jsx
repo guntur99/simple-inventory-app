@@ -205,7 +205,12 @@ export default function Dashboard() {
                   <Grid container spacing={0}>
                     <Grid key={index} item xs={12} md={6} lg={6}>
                       <button className="update">
-                        <Link to={`/edit-product/${uid[index]}`}>Update</Link>
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          to={`/edit-product/${uid[index]}`}
+                        >
+                          Update
+                        </Link>
                       </button>
                     </Grid>
                     <Grid key={index} item xs={12} md={6} lg={6}>
